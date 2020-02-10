@@ -1,0 +1,65 @@
+This file contains instructions for setting up this project with correct AWS credentials.
+As a preliminary step, create a free-tier AWS account at https://aws.amazon.com/account/
+
+***NOTE***: Security was assigned a low priority given the limited scope of this project.
+            To properly set up the AWS environment, S3 buckets and contents must be set
+            to public access. This means that anyone in the world with a link to your
+            AWS hosted site will be able to interact with the web-app, potentially
+            costing you money as they exceed the free-tier limits of get and pull requests.
+            While such an event is unlikely to occur, you should exercise caution in
+            distributing links to the app, and only have public access to the S3 bucket
+            turned on when actively testing/using the app.
+
+
+Amazon S3 set-up:
+----------------
+Navigate to Amazon S3 from the AWS dashboard. Click 'Create Bucket' and enter a name.
+Click 'Next' until you see the screen 'Block public access (bucket settings)'. Uncheck
+'Block *all* public access' and acknowledge the disclaimer about static hosting (that's us!).
+Click 'Next' again, and then finish creating the bucket. You should now see a link to your
+new bucket under 'Bucket name'. Click it to open the bucket, and then click 'Properties' on the
+top menu ribbon. Click 'Static website hosting', and check 'Use this bucket to host a website'.
+The endpoint url is the public link to your S3 hosted static site, where the first page to be
+displayed will be the index document. Save this url somewhere handy, as it is the link you will
+use to "publicly" access the web-app. Under 'Index document', go ahead and type in 'login.html',
+then click 'Save'.
+
+We're now ready to upload the project repository files into our bucket used to host our web-app.
+Go ahead and click and drag all contents of the root folder 'workforce-planning-tool' into the
+bucket. Click 'Next' on the upload screen, and you should see a page with 'Manage users', 'Access
+for other AWS account', and 'Manage public permissions'. Go ahead and click the dropdown under
+'Manage public permissions', and change it to 'Grant public read access to this object(s)'.
+Continue to click 'Next' until you reach the final upload screen, and then click 'Upload'. You
+should now see the project files and folders present within your S3 bucket.
+
+Finally, navigate to the 'Permissions' tab and click 'CORS configuration'. Copy and paste the following
+exactly as it appears. This will later allow us to configure permissions for S3 specific actions that
+our web-app will be using, such as uploading and downloading files from the S3 bucket.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>DELETE</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+
+Once you've copy and pasted the above, click 'Save'. At this point, you should be able to navigate to the
+endpoint url from earlier and be met with a login screen. The default credentials for the app are:
+
+Username: SuperUser
+Password: Workforce1!
+
+
+Amazon IAM set-up:
+------------------
+*to-do*
+
+Amazon Cognito set-up:
+----------------------
+*to-do*
